@@ -1,10 +1,10 @@
 # Spaceship Shooter Game
 
-This is a spaceship shooter game prototype. The purpose of this project is to learn low-level graphics/media libraries such as SDL2 and OpenGL. This project is part of a book that I'm currently reading (see below for name of the book).
+This is a spaceship shooter game prototype. The purpose of this project is to learn low-level graphics libraries such as SDL2 and OpenGL, as well as to learn various game architecture techniques and hierarchy/composition game object model. This project is part of a book that I'm currently reading (see below for name of the book).
 
 ## Technologies Used
 
-Python, and SDL2 (Simple Directmedia Layer) which is a low-level 2D/3D programming library similar to OpenGL. Additionally, for the organization of classes, I have applied a technique that mixes *hierarchy game object model* and *composition game object model*.
+Python, and SDL2 (Simple Directmedia Layer) which is a low-level 2D/3D programming library similar to OpenGL. Additionally, for the organization of classes, a technique that mixes *hierarchy game object model* and *composition game object model* is applied.
 
 ## Demonstration
 

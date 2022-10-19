@@ -4,12 +4,13 @@ This is a spaceship shooter game prototype. The purpose of this project is to le
 
 ## Technologies Used
 
-Python, and SDL2 (Simple Directmedia Layer) which is a low-level 2D/3D programming library similar to OpenGL.
+Python, and SDL2 (Simple Directmedia Layer) which is a low-level 2D/3D programming library similar to OpenGL. Additionally, for the organization of classes, I have applied a technique that mixes *hierarchy game object model* and *composition game object model*.
 
 ## Demonstration
 
 COMING SOON
 
-Note: All source code for this game prototype is inside `.py` files.
 
-*The book I'm currently reading for this project is called, **Game Programming in C++: Creating 3D Games**.*
+Note: All source code for this game prototype can be found inside `.py` files.
+
+*The book I'm currently reading for this project is called, **Game Programming in C++**.*

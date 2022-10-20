@@ -1,3 +1,4 @@
+import bisect
 from enum import Enum
 from vector2d import Vector2D
 
@@ -19,7 +20,7 @@ class Actor:
         self._m_scale: float = 1.0
         self._m_rotation: float = 0.0
 
-        # Components
+        # Components (sorted)
         self._m_components = []
 
         self._m_game = game
@@ -28,9 +29,10 @@ class Actor:
         game.add_actor(self)  # TODO
 
     def delete(self) -> None:
-        # Delete references
         self._m_game.remove_actor(self)  # TODO
-        self._m_components.clear()
+        while len(self._m_components) != 0:
+            c = self._m_components.pop()
+            c.delete()
 
     def update(self, dt: float) -> None:
         if self._m_state == State.eALIVE:
@@ -42,13 +44,12 @@ class Actor:
             c.update(dt)  # TODO
 
     def update_actor(self, dt: float) -> None:
-        # Child must implement
-        raise NotImplementedError
+        # Overridable
+        pass
 
     def add_component(self, component: "Component") -> None:
-        # TODO
-        pass
+        # Add based on update order
+        bisect.insort_left(self._m_components, component)
 
     def remove_component(self, component: "Component") -> None:
-        # TODO
-        pass
+        self._m_components.remove(component)

@@ -134,20 +134,6 @@ class Game:
         sdl2.SDL_SetRenderDrawColor(
             self._m_renderer, 192, 192, 192, 255)              # Color
         top_wall = sdl2.SDL_Rect(0, 0, 1024, self._m_thick)    # Shapes
-        bot_wall = sdl2.SDL_Rect(0, 768-self._m_thick, 1024, self._m_thick)
-        right_wall = sdl2.SDL_Rect(1024-self._m_thick, 0, self._m_thick, 1024)
-        paddle = sdl2.SDL_Rect(int(self._m_paddle_pos.x),
-                               int(self._m_paddle_pos.y-self._m_paddle_h/2),
-                               int(self._m_thick),
-                               int(self._m_paddle_h))
-        ball = sdl2.SDL_Rect(int(self._m_ball_pos.x-self._m_thick/2),
-                             int(self._m_ball_pos.y-self._m_thick/2),
-                             int(self._m_thick),
-                             int(self._m_thick))
-        sdl2.SDL_RenderFillRect(self._m_renderer, top_wall)    # Draws
-        sdl2.SDL_RenderFillRect(self._m_renderer, bot_wall)
-        sdl2.SDL_RenderFillRect(self._m_renderer, right_wall)
-        sdl2.SDL_RenderFillRect(self._m_renderer, paddle)
         sdl2.SDL_RenderFillRect(self._m_renderer, ball)
 
         # Swap color-buffer to update screen

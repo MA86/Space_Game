@@ -1,6 +1,7 @@
 import sdl2dll
 import sdl2
 import sdl2.sdlimage as sdlimage
+import bisect
 from vector2d import *
 
 
@@ -49,7 +50,7 @@ class Game:
             sdl2.SDL_Log("Renderer failed: ", sdl2.SDL_GetError())
             return False
 
-        if sdlimage.IMG_Init() == 0:
+        if sdlimage.IMG_Init(sdlimage.IMG_INIT_PNG) == 0:
             sdl2.SDL_Log("Image failed: ", sdl2.SDL_GetError())
             return False
 
@@ -186,4 +187,23 @@ class Game:
             self._m_textures[filename] = texture
         return texture
 
-    
+    def add_actor(self, actor: "Actor") -> None:
+        if self._m_updating_actors:
+            self._m_pending_actors.append(actor)
+        else:
+            self._m_actors.append(actor)
+
+    def remove_actor(self, actor: "Actor") -> None:
+        # Check in pending-actors list
+        if actor in self._m_pending_actors:
+            self._m_pending_actors.remove(actor)
+        # Check in actors list
+        if actor in self._m_actors:
+            self._m_actors.remove(actor)
+
+    def add_sprite(self, sprite: "SpriteComponent") -> None:
+        # Add based on update order
+        bisect.insort_left(self._m_sprites, sprite)
+
+    def remove_sprite(self, sprite: "SpriteComponent") -> None:
+        self._m_sprites.remove(sprite)

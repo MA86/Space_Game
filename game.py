@@ -1,6 +1,6 @@
+import sdl2dll
 import sdl2
 import sdl2.sdlimage as sdlimage
-import builtins
 from vector2d import *
 
 
@@ -12,7 +12,7 @@ class Game:
         self._m_running = True
         self._m_time_then = 0.0
 
-        # TODO Textures here
+        self._m_textures = {}
         self._m_actors = []
         self._m_pending_actors = []
         self._m_sprites = []
@@ -129,12 +129,61 @@ class Game:
         sdl2.SDL_SetRenderDrawColor(self._m_renderer, 0, 0, 0, 255)
         sdl2.SDL_RenderClear(self._m_renderer)
 
-        # TODO Draw sprite components below
-        # [old code] Draw scene to color-buffer:
-        sdl2.SDL_SetRenderDrawColor(
-            self._m_renderer, 192, 192, 192, 255)              # Color
-        top_wall = sdl2.SDL_Rect(0, 0, 1024, self._m_thick)    # Shapes
-        sdl2.SDL_RenderFillRect(self._m_renderer, ball)
+        # TODO Draw sprites
+        for sprite in self._m_sprites:
+            sprite.draw(self._m_renderer)
 
-        # Swap color-buffer to update screen
+        # Swap color-buffer to display on screen
         sdl2.SDL_RenderPresent(self._m_renderer)
+
+    def _load_data(self) -> None:
+        # Ship actor plus components
+        self._m_ship = Ship(self)
+        self._m_ship.set_position(Vector2D(100.0, 384.0))
+        self._m_ship.set_scale(1.5)
+
+        # Background actor plus components
+        bg_actor = Actor(self)
+        bg_actor.set_position(Vector2D(512.0, 384.0))
+        bg_sprite_far = BGSpriteComponent(bg_actor)
+        bg_sprite_far.set_screen_size(Vector2D(1024.0, 768.0))
+        bg_texture = [self.get_texture("assets/farback01.png"),
+                      self.get_texture("assets/farback02.png")]
+        bg_sprite_far.set_bgtextures(bg_texture)
+        bg_sprite_far.set_scroll_speed(-100.0)
+
+        bg_sprite_near = BGSpriteComponent(bg_actor, 50)
+        bg_sprite_near.set_screen_size(Vector2D(1024.0, 768.0))
+        bg_texture = [self.get_texture("assets/stars.png"),
+                      self.get_texture("assets/stars.png")]
+        bg_sprite_near.set_bgtexture(bg_texture)
+        bg_sprite_near.set_scroll_speed(-200.0)
+
+    def _unload_data(self) -> None:
+        # TODO
+        pass
+
+    def get_texture(self, filename: str) -> sdl2.SDL_Texture:
+        # Search for texture in dictionary
+        texture = self._m_textures.get(filename)
+        if texture != None:
+            return texture
+        else:
+            # Load image
+            surface = sdlimage.IMG_Load(filename)
+            if surface == None:
+                sdl2.SDL_Log("Failed to load image file: ", filename)
+                return None
+            # Create texture
+            texture = sdl2.SDL_CreateTextureFromSurface(
+                self._m_renderer, surface)
+            sdl2.SDL_FreeSurface(surface)
+            if texture == None:
+                sdl2.SDL_Log("Failed to create texture: ", filename)
+                return None
+
+            # Add to dic
+            self._m_textures[filename] = texture
+        return texture
+
+    

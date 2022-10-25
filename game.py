@@ -2,7 +2,9 @@ import sdl2dll
 import sdl2
 import sdl2.sdlimage as sdlimage
 import bisect
-from vector2d import *
+from ship import Ship
+from actor import *
+from vector2d import Vector2D
 
 
 class Game:
@@ -54,7 +56,7 @@ class Game:
             sdl2.SDL_Log("Image failed: ", sdl2.SDL_GetError())
             return False
 
-        # TODO Load data here
+        self._load_data()
 
         # Initial time
         self._m_time_then = sdl2.SDL_GetTicks()
@@ -89,7 +91,7 @@ class Game:
         if keyb_state[sdl2.SDL_SCANCODE_ESCAPE]:
             self._m_running = False
 
-        self._m_ship._process_keyboard(keyb_state)
+        self._m_ship.process_keyboard(keyb_state)
 
     def _process_update(self) -> None:
         # Wait 16ms (for frame limiting)
@@ -117,12 +119,13 @@ class Game:
         self._m_pending_actors.clear()
 
         # Collect dead actors
-        temp = []
+        dead_actors = []
         for dead_actor in self._m_actors:
-            temp.append(dead_actor)
+            if dead_actor.get_state() == State.eDEAD:
+                dead_actors.append(dead_actor)
 
         # Remove dead actors from self._m_actors
-        for da in temp:
+        for da in dead_actors:
             da.delete()
 
     def _process_output(self) -> None:
@@ -130,7 +133,7 @@ class Game:
         sdl2.SDL_SetRenderDrawColor(self._m_renderer, 0, 0, 0, 255)
         sdl2.SDL_RenderClear(self._m_renderer)
 
-        # TODO Draw sprites
+        # Draw sprites
         for sprite in self._m_sprites:
             sprite.draw(self._m_renderer)
 
@@ -164,7 +167,7 @@ class Game:
         # TODO
         pass
 
-    def get_texture(self, filename: str) -> sdl2.SDL_Texture:
+    def get_texture(self, filename) -> sdl2.SDL_Texture:
         # Search for texture in dictionary
         texture = self._m_textures.get(filename)
         if texture != None:

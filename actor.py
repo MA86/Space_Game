@@ -26,10 +26,10 @@ class Actor:
         self._m_game = game
 
         # Add to Game's actors-list
-        game.add_actor(self)  # TODO
+        game.add_actor(self)
 
     def delete(self) -> None:
-        self._m_game.remove_actor(self)  # TODO
+        self._m_game.remove_actor(self)
         while len(self._m_components) != 0:
             c = self._m_components.pop()
             c.delete()
@@ -41,10 +41,10 @@ class Actor:
 
     def update_components(self, dt: float) -> None:
         for c in self._m_components:
-            c.update(dt)  # TODO
+            c.update(dt)
 
     def update_actor(self, dt: float) -> None:
-        # Overridable
+        # Implementable
         pass
 
     def add_component(self, component: "Component") -> None:
@@ -53,3 +53,31 @@ class Actor:
 
     def remove_component(self, component: "Component") -> None:
         self._m_components.remove(component)
+
+    # Getters/setters
+    def get_position(self) -> Vector2D:
+        return self._m_position
+
+    def set_position(self, pos: Vector2D) -> None:
+        self._m_position = pos
+
+    def get_scale(self) -> float:
+        return self._m_scale
+
+    def set_scale(self, scale: float) -> None:
+        self._m_scale = scale
+
+    def get_rotation(self) -> float:
+        return self._m_rotation
+
+    def set_rotation(self, rotation: float) -> None:
+        self._m_rotation = rotation
+
+    def get_state(self) -> State:
+        return self._m_state
+
+    def set_state(self, state: State) -> None:
+        self._m_state = state
+
+    def get_game(self) -> "Game":
+        return self._m_game

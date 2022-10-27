@@ -47,9 +47,14 @@ class Actor:
         # Implementable
         pass
 
-    def add_component(self, component: "Component") -> None:
+    def add_component(self, component: "SpriteComponent") -> None:
         # Add based on update order
-        bisect.insort_left(self._m_components, component)
+        index = 0
+        for i, c in enumerate(self._m_components):
+            if component.get_update_order() < c.get_update_order():
+                index = i
+                break
+        self._m_components.insert(index, component)
 
     def remove_component(self, component: "Component") -> None:
         self._m_components.remove(component)

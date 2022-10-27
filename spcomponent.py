@@ -12,24 +12,20 @@ class SpriteComponent(Component):
         self.m_text_width = ctypes.c_int(0)
         self.m_text_height = ctypes.c_int(0)
 
-        self._m_owner.get_game().add_sprite(self) 
-
-    # Redefine compare for bisect.insort
-    def __lt__(self, other: "Component") -> bool:
-        return self._m_draw_order < other._m_draw_order
+        self._m_owner.get_game().add_sprite(self)
 
     def delete(self) -> None:
         # Remove from owner's list
         super().delete()
         # Remove from game's list
-        self._m_owner.get_game().remove_sprite(self) 
+        self._m_owner.get_game().remove_sprite(self)
 
     def draw(self, renderer: sdl2.SDL_Renderer) -> None:
         if self.m_texture != None:
             # Create a rectangle based on owner's transform
             rect = sdl2.SDL_Rect()
             rect.w = int(self.m_text_width.value *
-                         self._m_owner.get_scale())          
+                         self._m_owner.get_scale())
             rect.h = int(self.m_text_height.value * self._m_owner.get_scale())
             rect.x = int(self._m_owner.get_position().x - rect.w / 2)
             rect.y = int(self._m_owner.get_position().y - rect.h / 2)
@@ -49,3 +45,12 @@ class SpriteComponent(Component):
         # Specify height/width for texture
         sdl2.SDL_QueryTexture(texture, None, None,
                               ctypes.byref(self.m_text_width), ctypes.byref(self.m_text_height))
+
+    def get_draw_order(self) -> int:
+        return self.m_draw_order
+
+    def get_text_height(self) -> int:
+        return self.m_text_height
+
+    def get_text_width(self) -> int:
+        return self.m_text_width

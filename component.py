@@ -7,10 +7,6 @@ class Component:
 
         owner.add_component(self)
 
-    # Redefine compare for bisect.insort
-    def __lt__(self, other: "Component") -> bool:
-        return self._m_update_order < other._m_update_order
-
     def delete(self) -> None:
         self._m_owner.remove_component(self)
 

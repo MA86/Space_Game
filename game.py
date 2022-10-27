@@ -3,6 +3,7 @@ import sdl2
 import sdl2.sdlimage as sdlimage
 import bisect
 from ship import Ship
+from bgspcomponent import BGSpriteComponent
 from actor import *
 from vector2d import Vector2D
 
@@ -151,16 +152,16 @@ class Game:
         bg_actor.set_position(Vector2D(512.0, 384.0))
         bg_sprite_far = BGSpriteComponent(bg_actor)
         bg_sprite_far.set_screen_size(Vector2D(1024.0, 768.0))
-        bg_texture = [self.get_texture("assets/farback01.png"),
-                      self.get_texture("assets/farback02.png")]
-        bg_sprite_far.set_bgtextures(bg_texture)
+        bg_texture = [self.get_texture(b"assets/farback01.png"),
+                      self.get_texture(b"assets/farback02.png")]
+        bg_sprite_far.set_bg_textures(bg_texture)
         bg_sprite_far.set_scroll_speed(-100.0)
 
         bg_sprite_near = BGSpriteComponent(bg_actor, 50)
         bg_sprite_near.set_screen_size(Vector2D(1024.0, 768.0))
-        bg_texture = [self.get_texture("assets/stars.png"),
-                      self.get_texture("assets/stars.png")]
-        bg_sprite_near.set_bgtexture(bg_texture)
+        bg_texture = [self.get_texture(b"assets/stars.png"),
+                      self.get_texture(b"assets/stars.png")]
+        bg_sprite_near.set_bg_textures(bg_texture)
         bg_sprite_near.set_scroll_speed(-200.0)
 
     def _unload_data(self) -> None:
@@ -205,8 +206,13 @@ class Game:
             self._m_actors.remove(actor)
 
     def add_sprite(self, sprite: "SpriteComponent") -> None:
-        # Add based on update order
-        bisect.insort_left(self._m_sprites, sprite)
+        # Add based on draw order
+        index = 0
+        for i, c in enumerate(self._m_sprites):
+            if sprite.get_draw_order() < c.get_draw_order():
+                index = i
+                break
+        self._m_sprites.insert(index, sprite)
 
     def remove_sprite(self, sprite: "SpriteComponent") -> None:
         self._m_sprites.remove(sprite)

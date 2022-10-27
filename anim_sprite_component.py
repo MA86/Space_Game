@@ -1,4 +1,4 @@
-from spcomponent import SpriteComponent
+from sprite_component import SpriteComponent
 
 
 class AnimSpriteComponent(SpriteComponent):

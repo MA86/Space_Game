@@ -1,5 +1,5 @@
-import bisect
-from enum import Enum
+from typing import List         # For hinting
+from enum import Enum           # For enum
 from vector2d import Vector2D
 
 
@@ -13,7 +13,8 @@ class Actor:
     """ ACTOR BASE CLASS """
 
     def __init__(self, game: "Game") -> None:
-        self._m_state = State.eALIVE
+        # State
+        self._m_state: State = State.eALIVE
 
         # Transform
         self._m_position: Vector2D = Vector2D(0.0, 0.0)
@@ -21,14 +22,16 @@ class Actor:
         self._m_rotation: float = 0.0
 
         # Components (sorted)
-        self._m_components = []
+        self._m_components: List["Component"] = []
 
-        self._m_game = game
+        # Loose association
+        self._m_game: "Game" = game
 
-        # Add to Game's actors-list
+        # Add self to list
         game.add_actor(self)
 
     def delete(self) -> None:
+        # If container gone -> contained gone! [Composition]
         self._m_game.remove_actor(self)
         while len(self._m_components) != 0:
             c = self._m_components.pop()
@@ -47,7 +50,7 @@ class Actor:
         # Implementable
         pass
 
-    def add_component(self, component: "SpriteComponent") -> None:
+    def add_component(self, component: "Component") -> None:
         # Add based on update order
         index = 0
         for i, c in enumerate(self._m_components):

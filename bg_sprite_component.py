@@ -1,12 +1,13 @@
-from spcomponent import SpriteComponent
+from sprite_component import SpriteComponent
 import sdl2
 from vector2d import Vector2D
 
 
 # Encapsulate background image and its offset
 class BGTexture:
-    m_texture: sdl2.SDL_Texture = None
-    m_offset: Vector2D = Vector2D(0.0, 0.0)
+    def __init__(self) -> None:   # TODO make proper
+        self.m_texture: sdl2.SDL_Texture = None
+        self.m_offset: Vector2D = Vector2D(0.0, 0.0)
 
 
 class BGSpriteComponent(SpriteComponent):
@@ -32,8 +33,6 @@ class BGSpriteComponent(SpriteComponent):
     def draw(self, renderer: sdl2.SDL_Renderer) -> None:
         # Draw background textures
         for bgt in self._m_bg_textures:
-            print(bgt.m_texture)
-            print(bgt.m_offset.x)
             # Create a rectangle based on screen size
             rect = sdl2.SDL_Rect()
             rect.w = int(self._m_screen_size.x)

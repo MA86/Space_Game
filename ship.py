@@ -1,7 +1,7 @@
 import ctypes
 import sdl2
 from actor import Actor
-from animspcomponent import AnimSpriteComponent
+from anim_sprite_component import AnimSpriteComponent
 
 
 class Ship(Actor):

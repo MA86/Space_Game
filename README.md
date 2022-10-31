@@ -8,7 +8,7 @@ Python, and SDL2 (Simple Directmedia Layer) which is a low-level 2D/3D programmi
 
 ## Demonstration
 
-COMING SOON
+![space_shooter](space_shooter.gif)
 
 
 Note: All source code for this game prototype can be found inside `.py` files.

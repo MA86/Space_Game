@@ -54,8 +54,8 @@ class Actor:
         # Add based on update order
         index = 0
         for i, c in enumerate(self._m_components):
+            index = i
             if component.get_update_order() < c.get_update_order():
-                index = i
                 break
         self._m_components.insert(index, component)
 

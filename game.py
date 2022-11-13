@@ -212,8 +212,8 @@ class Game:
         # Add based on draw order
         index = 0
         for i, c in enumerate(self._m_sprites):
+            index = i
             if sprite.get_draw_order() < c.get_draw_order():
-                index = i
                 break
         self._m_sprites.insert(index, sprite)
 
